@@ -7,13 +7,15 @@ const PORT = process.env.PORT || 8000;
 
 // ==== Paths ====
 const viewsPath = path.join(__dirname,'../resources/views');
-console.log(viewsPath);
+const staticPath = path.join(__dirname,'../public');
+
+// console.log(viewsPath);
 
 // ==== set templates engine ====
 app.set('view engine', 'ejs');
 app.set('views', viewsPath);
 // app.use(expressLayout);
-// app.use(express.static(staticFiles));
+app.use(express.static(staticPath));
 
 
 app.get('/',(req,res)=>{
