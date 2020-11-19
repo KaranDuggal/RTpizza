@@ -41,3 +41,18 @@ nav li a:hover {
   color: #fff;
 }
 
+.btn-primary {
+  background: #fe5f1e;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+  background: #fff;
+  border-color: #fe5f1e;
+  color: #fe5f1e;
+}
+
+.amount {
+  color: #fe5f1e;
+}
+

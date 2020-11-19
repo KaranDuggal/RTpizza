@@ -14,13 +14,22 @@ const staticPath = path.join(__dirname,'../public');
 // ==== set templates engine ====
 app.set('view engine', 'ejs');
 app.set('views', viewsPath);
-// app.use(expressLayout);
+app.use(expressLayout);
 app.use(express.static(staticPath));
 
 
 app.get('/',(req,res)=>{
-    res.render('home.ejs');
-})
+    res.render('home');
+});
+app.get('/card',(req,res)=>{
+    res.render('customers/card');
+});
+app.get('/login',(req,res)=>{
+    res.render('auth/login');
+});
+app.get('/register',(req,res)=>{
+    res.render('auth/register');
+});
 
 app.listen(PORT,()=>{
     console.log(`listening on port ${PORT}`);
