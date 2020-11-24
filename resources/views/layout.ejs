@@ -23,8 +23,15 @@
             <ul class="flex items-center">
                 <li class="ml-6"><a href="#">Menu</a></li>
                 <li class="ml-6"><a href="#">Offers</a></li>
+                <% if(user){ %> 
+                <li class="ml-6">
+                    <form id="logout" action="/logout" method="POST"></form>
+                    <a onclick="document.getElementById('logout').submit()" href="#">Logout</a>
+                </li>
+                <% }else{ %> 
                 <li class="ml-6"><a href="/register">Register</a></li>
                 <li class="ml-6"><a href="/login">Login</a></li>
+                <% } %> 
                 <li class="ml-6"><a href="/card" class="inline-block px-4 py-2 rounded-full flex items-center">
                     <span id="cardCounter" class="text-white font-bold pr-2"><%= session.card ? session.card.totalQty : '' %> </span>
                     <img class="h-10" src="/img/card.svg" alt="">

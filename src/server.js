@@ -6,6 +6,7 @@ const mongoDbStore = require('connect-mongo')(session);
 const ejs = require('ejs');
 const expressLayout = require('express-ejs-layouts');
 const express = require('express');
+const passport = require('passport'); 
 const app = express();
 const PORT = process.env.PORT || 8000;
 // ==== connect to Databass ====
@@ -22,16 +23,19 @@ connection.once('open', () => {
 const viewsPath = path.join(__dirname, '../resources/views');
 const staticPath = path.join(__dirname, '../public');
 const routesPath = path.join(__dirname, '../routes/web');
-app.use(express.json())
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 // console.log(viewsPath);
 
-
+// ==== middelwear ====
+app.use(flash());
 
 // ==== Session Store ====
 let mongoStore = new mongoDbStore({
     mongooseConnection: connection,
     collection: 'sessions'
 });
+
 
 // ==== Session config ====
 app.use(session({
@@ -42,8 +46,12 @@ app.use(session({
     cookie: { maxAge: 1000 * 60 * 60 * 24 } //24 hours
 }));
 
-// ==== middelwear ====
-app.use(flash());
+// passport config 
+const passportInit = require('../app/config/passport');
+passportInit(passport)
+app.use(passport.initialize());
+app.use(passport.session())
+
 
 // ==== set templates engine ====
 app.set('view engine', 'ejs');
@@ -53,8 +61,10 @@ app.use(express.static(staticPath));
 // ==== globalmiddalWare ====
 app.use((req,res,next)=>{
     res.locals.session = req.session
+    res.locals.user = req.user
     next()
 });
+
 
 // ==== routes ====
 require(routesPath)(app)
