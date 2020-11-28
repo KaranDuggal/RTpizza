@@ -370,3 +370,7 @@ nav li a:hover {
   padding-left: 8px !important;
 }
 
+a.link {
+  color: #fe5f1e;
+}
+

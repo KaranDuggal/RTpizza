@@ -1,5 +1,7 @@
 import axios from 'axios'
 import Noty from 'noty'
+import { initAdmin } from './admin'
+
 let addToCard = document.querySelectorAll('.add-to-card')
 let cardCounter = document.querySelector('#cardCounter')
 function updatecard(pizza){
@@ -30,3 +32,13 @@ addToCard.forEach((btn) =>{
         
     })
 })
+
+// remove alert message after 5 second 
+const alertMsg = document.querySelector('#success-alert')
+if(alertMsg){
+    setTimeout(()=>{
+        alertMsg.remove()
+    },2000)
+}
+
+initAdmin()
