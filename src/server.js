@@ -4,6 +4,7 @@ const flash = require('express-flash');
 const session = require('express-session');
 const mongoDbStore = require('connect-mongo')(session);
 const ejs = require('ejs');
+const Emitter = require('events')
 const expressLayout = require('express-ejs-layouts');
 const express = require('express');
 const passport = require('passport'); 
@@ -35,7 +36,9 @@ let mongoStore = new mongoDbStore({
     mongooseConnection: connection,
     collection: 'sessions'
 });
-
+// event emitter 
+const eventEmitter = new Emitter()
+app.set('eventEmitter', eventEmitter)
 
 // ==== Session config ====
 app.use(session({
@@ -69,6 +72,20 @@ app.use((req,res,next)=>{
 // ==== routes ====
 require(routesPath)(app)
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`);
 });
+
+// socket 
+const io = require('socket.io')(server)
+io.on('connection',(socket)=>{
+    // join  
+    console.log(socket.id);
+    socket.on('join', (roomname)=>{
+        socket.join(roomname)
+    })
+})
+
+eventEmitter.on('orderUpdated',(data)=>{
+    io.to(`order_${data.id}`).emit('orderUpdated', data)
+})
